@@ -108,6 +108,3 @@ pdm run git config --local --unset-all core.hooksPath
 pdm install
 pdm run pre-commit install
 pdm run pre-commit autoupdate
-
-echo 'Entering the virtual environment...'
-pdm venv activate

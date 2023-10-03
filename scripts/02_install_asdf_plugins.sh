@@ -7,8 +7,15 @@ echo 'Installing PDM plugin for asdf...'
 asdf plugin add pdm https://github.com/1oglop1/asdf-pdm.git
 
 # Read the .tool-versions file and install the specified versions
-python_version=$(grep python .tool-versions | awk '{print $2}')
-pdm_version=$(grep pdm .tool-versions | awk '{print $2}')
+if ! python_version=$(grep python .tool-versions | awk '{print $2}'); then
+    echo "Failed to get Python version"
+    exit 1
+fi
+
+if ! pdm_version=$(grep pdm .tool-versions | awk '{print $2}'); then
+    echo "Failed to get PDM version"
+    exit 1
+fi
 
 echo "Installing Python ${python_version}..."
 asdf install python "${python_version}"
