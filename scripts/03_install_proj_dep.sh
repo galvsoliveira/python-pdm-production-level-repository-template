@@ -1,20 +1,20 @@
 #!/bin/bash
 
-if [ ! -f pyproject.toml ]; then
+if [[ ! -f pyproject.toml ]]; then
     echo 'Creating pyproject.toml ...'
-    poetry init
-    poetry add --group dev pre-commit detect-secrets black pylint ruff yamllint sqlfluff isort
-    poetry install
+    pdm init
+    pdm add --group dev pre-commit detect-secrets black pylint ruff yamllint sqlfluff isort
+    pdm install
 fi
 
-if [ ! -f .secrets.baseline ]; then
+if [[ ! -f .secrets.baseline ]]; then
     echo 'Creating .secrets.baseline ...'
-    poetry run detect-secrets scan > .secrets.baseline
+    pdm run detect-secrets scan > .secrets.baseline
 fi
 
-if [ ! -f .yamllint ]; then
+if [[ ! -f .yamllint ]]; then
     echo 'Creating .yamllint ...'
-    poetry run cat > .yamllint << EOF
+    pdm run cat > .yamllint << EOF
 ---
 extends: default
 
@@ -25,9 +25,9 @@ rules:
 EOF
 fi
 
-if [ ! -f .pre-commit-config.yaml ]; then
+if [[ ! -f .pre-commit-config.yaml ]]; then
     echo 'Creating .pre-commit-config.yaml ...'
-    poetry run cat > .pre-commit-config.yaml << EOF
+    pdm run cat > .pre-commit-config.yaml << EOF
 ---
 fail_fast: true
 repos:
@@ -84,7 +84,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: poetry run pylint .
+        entry: pdm run pylint .
         language: system
         types: [python]
   - repo: https://github.com/sqlfluff/sqlfluff
@@ -104,10 +104,10 @@ EOF
 fi
 
 echo 'Installing dependencies and pre-commit ...'
-poetry run git config --local --unset-all core.hooksPath
-poetry install
-poetry run pre-commit install
-poetry run pre-commit autoupdate
+pdm run git config --local --unset-all core.hooksPath
+pdm install
+pdm run pre-commit install
+pdm run pre-commit autoupdate
 
 echo 'Entering the virtual environment...'
-poetry shell
+pdm venv activate
