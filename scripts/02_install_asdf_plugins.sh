@@ -13,7 +13,7 @@ if ! python_version=$(grep python .tool-versions | awk '{print $2}'); then
 fi
 
 if ! pdm_version=$(grep pdm .tool-versions | awk '{print $2}'); then
-    echo "Failed to get PDM version"
+    echo "Failed to get pdm version"
     exit 1
 fi
 
